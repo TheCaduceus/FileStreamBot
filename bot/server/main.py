@@ -1,6 +1,6 @@
 from quart import Blueprint, Response, request, render_template, redirect
 from .error import abort
-from bot import TelegramBot
+from bot import version, TelegramBot
 from bot.config import Telegram, Server
 from bot.modules.telegram import get_message, get_file_properties
 
@@ -18,18 +18,15 @@ async def transmit_file(file_id):
     if code != file.caption:
         abort(403)
     
-    file_name, file_size, mime_type = await get_file_properties(file)
-
+    file_name, mime_type = await get_file_properties(file)
     headers = {
         'Content-Type': mime_type,
-        'Content-Disposition': f'attachment; filename="{file_name}"',
-        'Content-Length': file_size
+        'Content-Disposition': f'attachment; filename="{file_name}"'
     }
 
     file_stream = TelegramBot.stream_media(file)
 
     return Response(file_stream, headers=headers)
-
 
 @bp.route('/stream/<int:file_id>')
 async def stream_file(file_id):
