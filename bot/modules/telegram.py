@@ -39,6 +39,7 @@ async def get_file_properties(msg: Message):
     if not media: abort(400, 'Unknown file type.')
 
     file_name = getattr(media, 'file_name', None)
+    file_size = getattr(media, 'file_size', 0)
 
     if not file_name:
         file_format = {
@@ -53,4 +54,4 @@ async def get_file_properties(msg: Message):
 
     mime_type = guess_type(file_name)[0] or 'application/octet-stream'
 
-    return file_name, mime_type
+    return file_name, file_size, mime_type
