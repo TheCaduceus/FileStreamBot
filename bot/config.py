@@ -37,11 +37,11 @@ LOGGER_CONFIG_JSON = {
         }
     },
     'loggers': {
-        'uvicorn': {
+        'hypercorn': {
             'level': 'INFO',
             'handlers': ['file_handler', 'stream_handler']
         },
-        'uvicorn.error': {
+        'hypercorn.error': {
             'level': 'WARNING',
             'handlers': ['file_handler', 'stream_handler']
         },
