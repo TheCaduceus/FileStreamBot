@@ -112,4 +112,4 @@ docker run -p 8080:8080 file-stream-bot
 
 ## ❤️ Credits & Thanks
 
-[**Dr.Caduceus**](https://github.com/TheCaduceus): Owner & developer of Microsoft E5 Auto Renewal Tool.<br>
+[**Dr.Caduceus**](https://github.com/TheCaduceus): Owner & developer of File Stream Bot.
