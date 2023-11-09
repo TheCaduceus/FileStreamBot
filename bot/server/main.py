@@ -36,12 +36,12 @@ async def transmit_file(file_id):
     chunk_size = 1024 * 1024
     until_bytes = min(until_bytes, file_size - 1)
 
-    offset = from_bytes - (from_bytes % chunk_size)
-    first_part_cut = from_bytes - offset
+    offset = from_bytes // chunk_size
+    first_part_cut = from_bytes - (from_bytes - (from_bytes % chunk_size))
     last_part_cut = until_bytes % chunk_size + 1
 
     req_length = until_bytes - from_bytes + 1
-    part_count = ceil(until_bytes / chunk_size) - floor(offset / chunk_size)
+    part_count = ceil(until_bytes / chunk_size) - offset
 
     disposition = 'inline' if 'video' in mime_type or 'audio' in mime_type or 'html' in mime_type else 'attachment'
     headers={
@@ -54,7 +54,7 @@ async def transmit_file(file_id):
 
     async def file_streamer():
         current_part = 1
-        async for chunk in TelegramBot.stream_media(file, offset = from_bytes // chunk_size):
+        async for chunk in TelegramBot.stream_media(file, offset = offset):
             
             if not chunk:
                 break
