@@ -1,8 +1,9 @@
 from quart import Blueprint, Response, request, render_template, redirect
-from .error import abort
-from bot import version, TelegramBot
+from math import ceil, floor
+from bot import TelegramBot
 from bot.config import Telegram, Server
 from bot.modules.telegram import get_message, get_file_properties
+from .error import abort
 
 bp = Blueprint('main', __name__)
 
@@ -14,19 +15,63 @@ async def home():
 async def transmit_file(file_id):
     file = await get_message(int(file_id)) or abort(404)
     code = request.args.get('code') or abort(401)
+    range_header = request.headers.get('Range', 0)
 
     if code != file.caption:
         abort(403)
-    
-    file_name, mime_type = await get_file_properties(file)
-    headers = {
-        'Content-Type': mime_type,
-        'Content-Disposition': f'attachment; filename="{file_name}"'
+
+    file_name, file_size, mime_type = await get_file_properties(file)
+
+    if range_header:
+        from_bytes, until_bytes = range_header.replace("bytes=", "").split("-")
+        from_bytes = int(from_bytes)
+        until_bytes = int(until_bytes) if until_bytes else file_size - 1
+    else:
+        from_bytes =  0
+        until_bytes = file_size -1
+
+    if (until_bytes > file_size) or (from_bytes < 0) or (until_bytes < from_bytes):
+        abort(416, 'Invalid range.')
+
+    chunk_size = 1024 * 1024
+    until_bytes = min(until_bytes, file_size - 1)
+
+    offset = from_bytes - (from_bytes % chunk_size)
+    first_part_cut = from_bytes - offset
+    last_part_cut = until_bytes % chunk_size + 1
+
+    req_length = until_bytes - from_bytes + 1
+    part_count = ceil(until_bytes / chunk_size) - floor(offset / chunk_size)
+
+    disposition = 'inline' if 'video' in mime_type or 'audio' in mime_type or 'html' in mime_type else 'attachment'
+    headers={
+        'Content-Type': f'{mime_type}',
+        'Content-Range': f'bytes {from_bytes}-{until_bytes}/{file_size}',
+        'Content-Length': str(req_length),
+        'Content-Disposition': f'{disposition}; filename="{file_name}"',
+        'Accept-Ranges': 'bytes',
     }
 
-    file_stream = TelegramBot.stream_media(file)
+    async def file_streamer():
+        current_part = 1
+        async for chunk in TelegramBot.stream_media(file, offset = from_bytes // chunk_size):
+            
+            if not chunk:
+                break
+            elif part_count == 1:
+                yield chunk[first_part_cut:last_part_cut]
+            elif current_part == 1:
+                yield chunk[first_part_cut:]
+            elif current_part == part_count:
+                yield chunk[:last_part_cut]
+            else:
+                yield chunk
+            current_part += 1
 
-    return Response(file_stream, headers=headers)
+            if current_part > part_count:
+                break
+
+    return Response(file_streamer(), headers=headers, status=206 if range_header else 200)
 
 @bp.route('/stream/<int:file_id>')
 async def stream_file(file_id):
