@@ -54,7 +54,7 @@ async def transmit_file(file_id):
 
     async def file_streamer():
         current_part = 1
-        async for chunk in TelegramBot.stream_media(file, offset = floor(from_bytes // chunk_size)):
+        async for chunk in TelegramBot.stream_media(file, offset = from_bytes // chunk_size):
             
             if not chunk:
                 break
