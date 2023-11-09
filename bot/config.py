@@ -42,7 +42,7 @@ LOGGER_CONFIG_JSON = {
             'handlers': ['file_handler', 'stream_handler']
         },
         'uvicorn.error': {
-            'level': 'CRITICAL',
+            'level': 'WARNING',
             'handlers': ['file_handler', 'stream_handler']
         },
         'bot': {
