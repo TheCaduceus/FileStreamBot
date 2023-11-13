@@ -9,6 +9,21 @@ Add me to your channel to instantly generate links for any downloadable media. O
 - /log to get bot logs. (admin only!)
 """
 
+UserInfoText = \
+"""
+**First Name:**
+`{sender.first_name}`
+
+**Last Name:**
+`{sender.last_name}`
+
+**User ID:**
+`{sender.id}`
+
+**Username:**
+`@{sender.username}`
+"""
+
 FileLinksText = \
 """
 **Download Link:**
@@ -45,4 +60,9 @@ The link has been revoked. It may take some time for the changes to take effect.
 InvalidPayloadText = \
 """
 Invalid payload.
+"""
+
+MediaTypeNotSupportedText = \
+"""
+Sorry, this media type is not supported.
 """
