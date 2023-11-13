@@ -1,5 +1,4 @@
-pyrogram
-tgcrypto
+telethon
+cryptg
 quart
 uvicorn
-aiofiles
