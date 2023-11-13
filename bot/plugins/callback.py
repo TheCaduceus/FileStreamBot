@@ -1,27 +1,22 @@
-from pyrogram.types import CallbackQuery
+from telethon.events import CallbackQuery
 from bot import TelegramBot
-from bot.modules.static import *
 from bot.modules.decorators import verify_user
+from bot.modules.static import *
 from bot.modules.telegram import get_message
 
-@TelegramBot.on_callback_query()
-@verify_user
-async def manage_callback(bot, q: CallbackQuery):
-    query = q.data
-    if query.startswith('rm_'):
-        sq = query.split('_')
+@TelegramBot.on(CallbackQuery(pattern=r'^rm_'))
+@verify_user(private=True)
+async def delete_file(event: CallbackQuery.Event):
+    query_data = event.query.data.decode().split('_')
 
-        if len(sq) != 3:
-            return await q.answer(InvalidQueryText, show_alert=True)
-        
-        message = await get_message(int(sq[1]))
-        
-        if not message:
-            return await q.answer(MessageNotExist, show_alert=True)
-        if sq[2] != message.caption:
-            return await q.answer(InvalidQueryText, show_alert=True)
+    if len(query_data) != 3:
+        return await event.answer(InvalidQueryText, alert=True)
 
-        await message.delete()
-        await q.answer(LinkRevokedText, show_alert=True)
-    else:
-        await q.answer(InvalidQueryText, show_alert=True)
+    message = await get_message(int(query_data[1]))
+
+    if not message:
+        return await event.answer(MessageNotExist, alert=True)
+
+    await message.delete()
+
+    return await event.answer(LinkRevokedText, alert=True)
