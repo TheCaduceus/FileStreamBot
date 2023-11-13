@@ -1,126 +1,92 @@
-from pyrogram import filters, errors
-from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
+from telethon import Button
+from telethon.events import NewMessage
+from telethon.errors import MessageAuthorRequiredError, MessageNotModifiedError, MessageIdInvalidError
+from telethon.tl.custom import Message
 from secrets import token_hex
 from bot import TelegramBot
 from bot.config import Telegram, Server
 from bot.modules.decorators import verify_user
+from bot.modules.telegram import send_message, filter_files
 from bot.modules.static import *
 
-@TelegramBot.on_message(
-    filters.private
-            & (
-                filters.document
-                | filters.video
-                | filters.video_note
-                | filters.audio
-                | filters.voice
-                | filters.photo
-            )
-)
-@verify_user
-async def handle_user_file(_, msg: Message):
+@TelegramBot.on(NewMessage(incoming=True, func=filter_files))
+@verify_user(private=True)
+async def user_file_handler(event: NewMessage.Event | Message):
     secret_code = token_hex(Telegram.SECRET_CODE_LENGTH)
-    file = await msg.copy(
-        chat_id=Telegram.CHANNEL_ID,
-        caption=f'`{secret_code}`'
-    )
-    file_id = file.id
+    event.message.text = f'`{secret_code}`'
+    message = await send_message(event.message)
+    message_id = message.id
 
-    dl_link = f'{Server.BASE_URL}/dl/{file_id}?code={secret_code}'
-    tg_link = f'{Server.BASE_URL}/file/{file_id}?code={secret_code}'
-    deep_link = f'https://t.me/{Telegram.BOT_USERNAME}?start=file_{file_id}_{secret_code}'
+    dl_link = f'{Server.BASE_URL}/dl/{message_id}?code={secret_code}'
+    tg_link = f'{Server.BASE_URL}/file/{message_id}?code={secret_code}'
+    deep_link = f'https://t.me/{Telegram.BOT_USERNAME}?start=file_{message_id}_{secret_code}'
 
-    if (msg.document and 'video' in msg.document.mime_type) or msg.video:
-        stream_link = f'{Server.BASE_URL}/stream/{file_id}?code={secret_code}'
-        await msg.reply(
-            text=MediaLinksText % {'dl_link': dl_link, 'tg_link': tg_link, 'stream_link': stream_link},
-            quote=True,
-            reply_markup=InlineKeyboardMarkup(
+    if (event.document and 'video' in event.document.mime_type) or event.video:
+        stream_link = f'{Server.BASE_URL}/stream/{message_id}?code={secret_code}'
+        await event.reply(
+            message= MediaLinksText % {'dl_link': dl_link, 'tg_link': tg_link, 'tg_link': tg_link, 'stream_link': stream_link},
+            buttons=[
                 [
-                    [
-                        InlineKeyboardButton('Download', url=dl_link),
-                        InlineKeyboardButton('Stream', url=stream_link)
-                    ],
-                    [
-                        InlineKeyboardButton('Get File', url=deep_link),
-                        InlineKeyboardButton('Revoke', callback_data=f'rm_{file_id}_{secret_code}')
-                    ]
+                    Button.url('Download', dl_link),
+                    Button.url('Stream', stream_link)
+                ],
+                [
+                    Button.url('Get File', deep_link),
+                    Button.inline('Revoke', f'rm_{message_id}_{secret_code}')
                 ]
-            )
+            ]
         )
     else:
-        await msg.reply(
-            text=FileLinksText % {'dl_link': dl_link, 'tg_link': tg_link},
-            quote=True,
-            reply_markup=InlineKeyboardMarkup(
+        await event.reply(
+            message=FileLinksText % {'dl_link': dl_link, 'tg_link': tg_link},
+            buttons=[
                 [
-                    [
-                        InlineKeyboardButton('Download', url=dl_link),
-                        InlineKeyboardButton('Get File', url=deep_link)
-                    ],
-                    [
-                        InlineKeyboardButton('Revoke', callback_data=f'rm_{file_id}_{secret_code}')
-                    ]
+                    Button.url('Download', dl_link),
+                    Button.url('Get File', deep_link)
+                ],
+                [
+                    Button.inline('Revoke', f'rm_{message_id}_{secret_code}')
                 ]
-            )
+            ]
         )
 
-@TelegramBot.on_message(
-    filters.channel
-    & ~filters.forwarded
-    & ~filters.media_group
-    & (
-        filters.document
-        | filters.video
-        | filters.video_note
-        | filters.audio
-        | filters.voice
-        | filters.photo
-    )
-)
-@verify_user
-async def handle_channel_file(_, msg: Message):
-    if msg.caption and '#pass' in msg.caption:
-        return
-    
+@TelegramBot.on(NewMessage(incoming=True, func=filter_files, forwards=False))
+@verify_user()
+async def channel_file_handler(event: NewMessage.Event | Message):
     secret_code = token_hex(Telegram.SECRET_CODE_LENGTH)
+    event.message.text = f"`{secret_code}`"
+    message = await send_message(event.message)
+    message_id = message.id
 
-    try:
-        file = await msg.copy(
-            chat_id=Telegram.CHANNEL_ID,
-            caption=f'`{secret_code}`'
-        )
-    except (errors.ChatForwardsRestricted, errors.MessageIdInvalid, errors.ChannelPrivate):
-        return
+    dl_link = f"{Server.BASE_URL}/dl/{message_id}?code={secret_code}"
+    tg_link = f"{Server.BASE_URL}/file/{message_id}?code={secret_code}"
 
-    file_id = file.id
+    if (event.document and "video" in event.document.mime_type) or event.video:
+        stream_link = f"{Server.BASE_URL}/stream/{message_id}?code={secret_code}"
 
-    dl_link = f'{Server.BASE_URL}/dl/{file_id}?code={secret_code}'
-    tg_link = f'{Server.BASE_URL}/file/{file_id}?code={secret_code}'
-
-    if (msg.document and 'video' in msg.document.mime_type) or msg.video:
-        stream_link = f'{Server.BASE_URL}/stream/{file_id}?code={secret_code}'
-        await msg.edit_reply_markup(
-            InlineKeyboardMarkup(
-                [
-                    [
-                        InlineKeyboardButton('Download', url=dl_link),
-                        InlineKeyboardButton('Stream', url=stream_link)
-                    ],
-                    [
-                        InlineKeyboardButton('Get File', url=tg_link)
-                    ]
+        try:
+            await event.edit(
+                buttons=[
+                    [Button.url("Download", dl_link), Button.url("Stream", stream_link)],
+                    [Button.url("Get File", tg_link)],
                 ]
             )
-        )
+        except (
+            MessageAuthorRequiredError,
+            MessageIdInvalidError,
+            MessageNotModifiedError,
+        ):
+            pass
     else:
-        await msg.edit_reply_markup(
-            InlineKeyboardMarkup(
-                [
-                    [
-                        InlineKeyboardButton('Download', url=dl_link),
-                        InlineKeyboardButton('Get File', url=tg_link)
-                    ]
+        try:
+            await event.edit(
+                buttons=[
+                    [Button.url("Download", dl_link), Button.url("Get File", tg_link)]
                 ]
             )
-        )
+        except (
+            MessageAuthorRequiredError,
+            MessageIdInvalidError,
+            MessageNotModifiedError,
+        ):
+            pass
