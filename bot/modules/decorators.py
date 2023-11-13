@@ -1,16 +1,22 @@
-from pyrogram import Client 
-from pyrogram.types import Message, CallbackQuery
-from typing import Union, Callable
+from telethon.events import NewMessage, CallbackQuery
+from telethon.tl.custom import Message
+from typing import Callable
 from functools import wraps
 from bot.config import Telegram
+from bot.modules.static import *
 
-def verify_user(func: Callable):
+def verify_user(private: bool = False):
     
-    @wraps(func)
-    async def decorator(client: Client, update: Union[Message, CallbackQuery]):
-        chat_id = str(update.from_user.id if update.from_user else update.chat.id)
+    def decorator(func: Callable):
+        @wraps(func)
+        async def wrapper(update: NewMessage.Event | CallbackQuery.Event):
+            if private and not update.is_private:
+                return
 
-        if not Telegram.ALLOWED_USER_IDS or chat_id in Telegram.ALLOWED_USER_IDS:
-            return await func(client, update)
-    
+            chat_id = str(update.chat_id)
+
+            if not Telegram.ALLOWED_USER_IDS or chat_id in Telegram.ALLOWED_USER_IDS:
+                return await func(update)
+
+        return wrapper
     return decorator
