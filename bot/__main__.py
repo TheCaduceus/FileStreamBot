@@ -12,7 +12,7 @@ def load_plugins():
     logger.info(f'Loaded {count} {"plugins" if count > 1 else "plugin"}.')
 
 if __name__ == '__main__':
-    logger.info('Intializing...')
+    logger.info('initializing...')
     TelegramBot.loop.create_task(server.serve())
     TelegramBot.start(bot_token=Telegram.BOT_TOKEN)
     logger.info('Telegram client is now started.')
