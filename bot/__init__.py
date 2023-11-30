@@ -5,7 +5,7 @@ from .config import Telegram, LOGGER_CONFIG_JSON
 
 dictConfig(LOGGER_CONFIG_JSON)
 
-version = 1.5
+version = 1.6
 logger = getLogger('bot')
 
 TelegramBot = TelegramClient(
