@@ -1,9 +1,7 @@
 from telethon.events import NewMessage, CallbackQuery
-from telethon.tl.custom import Message
 from typing import Callable
 from functools import wraps
 from bot.config import Telegram
-from bot.modules.static import *
 
 def verify_user(private: bool = False):
     
