@@ -16,6 +16,8 @@ async def delete_file(event: CallbackQuery.Event):
 
     if not message:
         return await event.answer(MessageNotExist, alert=True)
+    if query_data[2] != message.raw_text:
+        return await event.answer(InvalidQueryText, alert=True)
 
     await message.delete()
 
