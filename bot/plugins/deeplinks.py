@@ -17,6 +17,8 @@ async def send_file(event: NewMessage.Event | Message):
 
     if not message:
         return await event.reply(MessageNotExist)
+    if payload[2] != message.raw_text:
+        return await event.reply(InvalidPayloadText)
     
     message.raw_text = ''
     await send_message(message, send_to=event.chat_id)
