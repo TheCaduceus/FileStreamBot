@@ -73,7 +73,7 @@ pip install -r requirements.txt
 * `API_HASH`|`TELEGRAM_API_HASH`: API hash of your Telegram account, can be obtained from [My Telegram](https://my.telegram.org). `str`
 * `OWNER_ID`: ID of your Telegram account, can be obtained by sending **/info** to [@DrFileStreamBot](https://t.me/DrFileStreamBot). `int`
 * `ALLOWED_USER_IDS`: A list of Telegram account IDs (separated by spaces) that are permitted to use the bot. Leave this field empty to allow anyone to use it. `str`
-* `BOT_USERNAME`|`TELEGRAM_BOT_USERNAME`: Username of your Telegram bot, create one using [@BotFather](https://t.me/BotFather). `str`
+* `BOT_USERNAME`|`TELEGRAM_BOT_USERNAME`: Username of your Telegram bot(Without '@'), create one using [@BotFather](https://t.me/BotFather). `str`
 * `BOT_TOKEN`|`TELEGRAM_BOT_TOKEN`: Telegram API token of your bot, can be obtained from [@BotFather](https://t.me/BotFather). `str`
 * `CHANNEL_ID`|`TELEGRAM_CHANNEL_ID`: ID of the channel where bot will forward all files received from users, can be obtained by forwarding any message from channel to [@ShowJsonBot](https://t.me/ShowJsonBot) and then looking from `forward_from_chat` key. `int`
 * `BOT_WORKERS`: Number of updates bot should process from Telegram at once, by default to 10 updates. `int`
