@@ -56,7 +56,7 @@ async def user_file_handler(event: NewMessage.Event | Message):
 @TelegramBot.on(NewMessage(incoming=True, func=filter_files, forwards=False))
 @verify_user()
 async def channel_file_handler(event: NewMessage.Event | Message):
-    if await db.is_inserted("ban", event.sender_id):
+    if await db.is_inserted("cban", event.sender_id):
         return
     if event.raw_text and '#pass' in event.raw_text:
         return
