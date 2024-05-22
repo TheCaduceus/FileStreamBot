@@ -2,3 +2,4 @@ telethon
 cryptg
 quart
 uvicorn
+redis
