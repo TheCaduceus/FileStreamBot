@@ -15,6 +15,10 @@ class Server:
     BIND_ADDRESS = env.get("BIND_ADDRESS", "0.0.0.0")
     PORT = int(env.get("PORT", 8080))
 
+class Database:
+    REDIS_URI = env.get("REDIS_URI", "redis-xyz")
+    REDIS_PASSWORD = env.get("REDIS_PASSWORD", "password")
+
 # LOGGING CONFIGURATION
 LOGGER_CONFIG_JSON = {
     'version': 1,
