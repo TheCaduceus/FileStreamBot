@@ -58,6 +58,30 @@ async def unban_user(event: Message):
         await db.delete("ban", user_id)
     await event.reply('User unbanned!')
 
+@TelegramBot.on(NewMessage(chats=Telegram.OWNER_ID, incoming=True, pattern=r'^/cban (\d+)$'))
+@verify_user(private=True)
+async def ban_user(event: Message):
+    match = re.match(r'^/cban (\d+)$', event.raw_text)
+    if not match:
+        await event.reply("Please provide a valid channel ID.")
+        return
+    channel_id = int(match.group(1))
+    if not await db.is_inserted("cban", channel_id):
+        await db.insert("cban", channel_id)
+    await event.reply('channel banned!')
+
+@TelegramBot.on(NewMessage(chats=Telegram.OWNER_ID, incoming=True, pattern=r'^/cunban (\d+)$'))
+@verify_user(private=True)
+async def unban_user(event: Message):
+    match = re.match(r'^/cunban (\d+)$', event.raw_text)
+    if not match:
+        await event.reply("Please provide a valid channel ID.")
+        return
+    channel_id = int(match.group(1))
+    if await db.is_inserted("cban", channel_id):
+        await db.delete("cban", channel_id)
+    await event.reply('channel unbanned!')
+
 @TelegramBot.on(NewMessage(chats=Telegram.OWNER_ID, incoming=True, pattern=r'^/bcast$'))
 @verify_user(private=True)
 async def bcast(event: Message):
