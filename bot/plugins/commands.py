@@ -60,7 +60,7 @@ async def unban_user(event: Message):
 
 @TelegramBot.on(NewMessage(chats=Telegram.OWNER_ID, incoming=True, pattern=r'^/cban (\d+)$'))
 @verify_user(private=True)
-async def ban_user(event: Message):
+async def ban_channel(event: Message):
     match = re.match(r'^/cban (\d+)$', event.raw_text)
     if not match:
         await event.reply("Please provide a valid channel ID.")
@@ -72,7 +72,7 @@ async def ban_user(event: Message):
 
 @TelegramBot.on(NewMessage(chats=Telegram.OWNER_ID, incoming=True, pattern=r'^/cunban (\d+)$'))
 @verify_user(private=True)
-async def unban_user(event: Message):
+async def unban_channel(event: Message):
     match = re.match(r'^/cunban (\d+)$', event.raw_text)
     if not match:
         await event.reply("Please provide a valid channel ID.")
