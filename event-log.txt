@@ -1,0 +1,80 @@
+[20/09/2024 05:29:12][bot][INFO] -> initializing...
+[20/09/2024 05:29:12][uvicorn][INFO] -> Web server is started!
+[20/09/2024 05:29:12][uvicorn][INFO] -> Server running on 0.0.0.0:8080
+[20/09/2024 05:29:18][bot][INFO] -> Telegram client is now started.
+[20/09/2024 05:29:18][bot][INFO] -> Loading bot plugins...
+[20/09/2024 05:29:39][bot][INFO] -> initializing...
+[20/09/2024 05:29:39][uvicorn][INFO] -> Web server is started!
+[20/09/2024 05:29:39][uvicorn][INFO] -> Server running on 0.0.0.0:8080
+[20/09/2024 05:29:40][bot][INFO] -> Telegram client is now started.
+[20/09/2024 05:29:40][bot][INFO] -> Loading bot plugins...
+[20/09/2024 05:29:40][bot][INFO] -> Loaded 3 plugins.
+[20/09/2024 05:29:40][bot][INFO] -> Bot is now ready!
+[20/09/2024 05:29:45][uvicorn.access][INFO] -> 10.240.4.161:0 - "GET / HTTP/1.1" 302
+[20/09/2024 05:30:31][uvicorn.access][INFO] -> 10.240.4.161:0 - "GET / HTTP/1.1" 302
+[20/09/2024 05:31:00][bot][INFO] -> initializing...
+[20/09/2024 05:31:00][uvicorn][INFO] -> Web server is started!
+[20/09/2024 05:31:00][uvicorn][INFO] -> Server running on 0.0.0.0:8080
+[20/09/2024 05:31:01][bot][INFO] -> Telegram client is now started.
+[20/09/2024 05:31:01][bot][INFO] -> Loading bot plugins...
+[20/09/2024 05:31:01][bot][INFO] -> Loaded 3 plugins.
+[20/09/2024 05:31:01][bot][INFO] -> Bot is now ready!
+[20/09/2024 05:31:04][uvicorn.access][INFO] -> 10.240.4.161:0 - "GET / HTTP/1.1" 200
+[20/09/2024 05:31:04][uvicorn.access][INFO] -> 10.240.4.161:0 - "GET /favicon.ico HTTP/1.1" 404
+[20/09/2024 05:31:19][bot.server][ERROR] -> Exception on request GET /1002119229070/30184
+Traceback (most recent call last):
+  File "/home/codespace/.local/lib/python3.12/site-packages/quart/app.py", line 1403, in handle_request
+    return await self.full_dispatch_request(request_context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.local/lib/python3.12/site-packages/quart/app.py", line 1441, in full_dispatch_request
+    result = await self.handle_user_exception(error)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.local/lib/python3.12/site-packages/quart/app.py", line 1029, in handle_user_exception
+    raise error
+  File "/home/codespace/.local/lib/python3.12/site-packages/quart/app.py", line 1439, in full_dispatch_request
+    result = await self.dispatch_request(request_context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.local/lib/python3.12/site-packages/quart/app.py", line 1535, in dispatch_request
+    return await self.ensure_async(handler)(**request_.view_args)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/FileStreamBot/bot/server/main.py", line 16, in transmit_file
+    file = await get_message(message_id=int(-channel_id,file_id)) or abort(404)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: int() base must be >= 2 and <= 36, or 0
+[20/09/2024 05:31:19][uvicorn.access][INFO] -> 10.240.4.161:0 - "GET /1002119229070/30184 HTTP/1.1" 500
+[20/09/2024 05:31:57][bot][INFO] -> initializing...
+[20/09/2024 05:31:57][uvicorn][INFO] -> Web server is started!
+[20/09/2024 05:31:57][uvicorn][INFO] -> Server running on 0.0.0.0:8080
+[20/09/2024 05:31:58][bot][INFO] -> Telegram client is now started.
+[20/09/2024 05:31:58][bot][INFO] -> Loading bot plugins...
+[20/09/2024 05:31:58][bot][INFO] -> Loaded 3 plugins.
+[20/09/2024 05:31:58][bot][INFO] -> Bot is now ready!
+[20/09/2024 05:32:00][bot.server][ERROR] -> Exception on request GET /1002119229070/30184
+Traceback (most recent call last):
+  File "/home/codespace/.local/lib/python3.12/site-packages/quart/app.py", line 1403, in handle_request
+    return await self.full_dispatch_request(request_context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.local/lib/python3.12/site-packages/quart/app.py", line 1441, in full_dispatch_request
+    result = await self.handle_user_exception(error)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.local/lib/python3.12/site-packages/quart/app.py", line 1029, in handle_user_exception
+    raise error
+  File "/home/codespace/.local/lib/python3.12/site-packages/quart/app.py", line 1439, in full_dispatch_request
+    result = await self.dispatch_request(request_context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.local/lib/python3.12/site-packages/quart/app.py", line 1535, in dispatch_request
+    return await self.ensure_async(handler)(**request_.view_args)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/FileStreamBot/bot/server/main.py", line 17, in transmit_file
+    file = await get_message(message_id=int(cid,file_id)) or abort(404)
+                                        ^^^^^^^^^^^^^^^^
+ValueError: int() base must be >= 2 and <= 36, or 0
+[20/09/2024 05:32:00][uvicorn.access][INFO] -> 10.240.4.161:0 - "GET /1002119229070/30184 HTTP/1.1" 500
+[20/09/2024 05:32:41][bot][INFO] -> initializing...
+[20/09/2024 05:32:41][uvicorn][INFO] -> Web server is started!
+[20/09/2024 05:32:41][uvicorn][INFO] -> Server running on 0.0.0.0:8080
+[20/09/2024 05:32:41][bot][INFO] -> Telegram client is now started.
+[20/09/2024 05:32:41][bot][INFO] -> Loading bot plugins...
+[20/09/2024 05:32:41][bot][INFO] -> Loaded 3 plugins.
+[20/09/2024 05:32:41][bot][INFO] -> Bot is now ready!
+[20/09/2024 05:32:44][uvicorn.access][INFO] -> 10.240.4.161:0 - "GET /1002119229070/30184 HTTP/1.1" 200

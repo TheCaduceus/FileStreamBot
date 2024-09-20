@@ -2,7 +2,7 @@ from telethon.events import NewMessage
 from telethon.tl.custom import Message
 from bot import TelegramBot
 from bot.modules.decorators import verify_user
-from bot.modules.telegram import get_message, send_message
+from bot.modules.telegram import get_message
 from bot.modules.static import *
 
 @TelegramBot.on(NewMessage(incoming=True, pattern=r'^/start file_'))

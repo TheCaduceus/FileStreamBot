@@ -6,18 +6,16 @@ from bot import TelegramBot
 from bot.config import Telegram
 from bot.server.error import abort
 
-async def get_message(message_id: int) -> Message | None:
+async def get_message(message_id: int, channel_id:int) -> Message | None:
     message = None
     
     try:
-        message = await TelegramBot.get_messages(Telegram.CHANNEL_ID, ids=message_id)
+        message = await TelegramBot.get_messages(channel_id, ids=message_id)
     except Exception:
         pass
 
     return message
 
-async def send_message(message:Message, send_to:int = Telegram.CHANNEL_ID) -> Message:
-    return await TelegramBot.send_message(entity=send_to, message=message)
 
 def filter_files(update: NewMessage.Event | Message):
     return bool(
