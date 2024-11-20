@@ -1,14 +1,15 @@
 from os import environ as env
 
 class Telegram:
-    API_ID = int(env.get("TELEGRAM_API_ID", 1234))
+    API_ID = int(env.get("TELEGRAM_API_ID", 12345))
     API_HASH = env.get("TELEGRAM_API_HASH", "xyz")
-    OWNER_ID = int(env.get("OWNER_ID", 1234567890))
+    OWNER_ID = int(env.get("OWNER_ID", 5530237028))
     ALLOWED_USER_IDS = env.get("ALLOWED_USER_IDS", "").split()
     BOT_USERNAME = env.get("TELEGRAM_BOT_USERNAME", "BotFather")
-    BOT_TOKEN = env.get("TELEGRAM_BOT_TOKEN", "1234:abcd")
-    CHANNEL_ID = int(env.get("TELEGRAM_CHANNEL_ID", -1001234567890))
-    SECRET_CODE_LENGTH = int(env.get("SECRET_CODE_LENGTH", 12))
+    BOT_TOKEN = env.get("TELEGRAM_BOT_TOKEN", "1234567:xyz")
+    BOT_WORKERS = env.get("BOT_WORKERS", 10)
+    CHANNEL_ID = int(env.get("TELEGRAM_CHANNEL_ID", -100123456789))
+    SECRET_CODE_LENGTH = int(env.get("SECRET_CODE_LENGTH", 24))
 
 class Server:
     BASE_URL = env.get("BASE_URL", "http://127.0.0.1:8080")
@@ -45,6 +46,10 @@ LOGGER_CONFIG_JSON = {
             'handlers': ['file_handler', 'stream_handler']
         },
         'bot': {
+            'level': 'INFO',
+            'handlers': ['file_handler', 'stream_handler']
+        },
+        'hydrogram': {
             'level': 'INFO',
             'handlers': ['file_handler', 'stream_handler']
         }
