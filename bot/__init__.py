@@ -13,7 +13,7 @@ TelegramBot = Client(
     api_id = Telegram.API_ID,
     api_hash = Telegram.API_HASH,
     bot_token = Telegram.BOT_TOKEN,
-    plugins = {"root": "bot/plugins"},
+    plugins = {'root': 'bot/plugins'},
     workers = Telegram.BOT_WORKERS,
     max_concurrent_transmissions = 1000
 )
