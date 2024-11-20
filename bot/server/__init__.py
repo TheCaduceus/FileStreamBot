@@ -2,12 +2,12 @@ from quart import Quart
 from uvicorn import Server as UvicornServer, Config
 from logging import getLogger
 from bot.config import Server, LOGGER_CONFIG_JSON
-
 from . import main, error
 
 logger = getLogger('uvicorn')
 instance = Quart(__name__)
 instance.config['RESPONSE_TIMEOUT'] = None
+instance.config['MAX_CONTENT_LENGTH'] = 999999999999999
 
 @instance.before_serving
 async def before_serve():
