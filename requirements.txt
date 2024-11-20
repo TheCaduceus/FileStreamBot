@@ -1,4 +1,4 @@
-telethon
-cryptg
+hydrogram
+tgcrypto
 quart
 uvicorn
