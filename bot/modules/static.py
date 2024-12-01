@@ -16,7 +16,7 @@ PrivacyText = \
 
 **2.Download Links:** Links include a secret code to prevent unauthorized access.
 
-**3.User Control:** You can revoke links anytime using the "Revoke" button.
+**3.User Control:** You can revoke links anytime using the "Revoke" button. However, revocation must be done within at least 48 hours from the time the link is generated.
 
 **4.Moderation:** The bot owner can view and delete your files if necessary.
 
@@ -51,6 +51,11 @@ MessageNotExist = \
 File revoked or not exist.
 """
 
+FileDeleteForbiddenText = \
+"""
+This file can't be deleted.
+"""
+
 LinkRevokedText = \
 """
 The link has been revoked. It may take some time for the changes to take effect.
@@ -61,7 +66,7 @@ InvalidPayloadText = \
 Invalid payload.
 """
 
-UserNotInAllowedList = \
+UserNotInAllowedListText = \
 """
 You are not allowed to use this bot.
 """
