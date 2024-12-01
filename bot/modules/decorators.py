@@ -14,10 +14,10 @@ def verify_user(func: Callable):
         if not Telegram.ALLOWED_USER_IDS or chat_id in Telegram.ALLOWED_USER_IDS:
             return await func(client, update)
         elif isinstance(update, CallbackQuery):
-            return await update.answer(UserNotInAllowedList, show_alert=True)
+            return await update.answer(UserNotInAllowedListText, show_alert=True)
         elif isinstance(update, Message):
             return await update.reply(
-                text = UserNotInAllowedList,
+                text = UserNotInAllowedListText,
                 quote = True,
                 reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton('Deploy Own', url='https://github.com/TheCaduceus/FileStreamBot')]])
             )
